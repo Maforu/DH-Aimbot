@@ -16,7 +16,7 @@ task.spawn(function()
         game:GetService("StarterGui"):SetCore("SendNotification", {
             Title = "Aimbot Loaded",
             Text = "Join now on https://discord.gg/seulink", -- personalize o link
-            Duration = 6,
+            Duration = 666,
             Icon = "rbxassetid://122409118619665" -- imagem anime
         })
     end)
