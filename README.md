@@ -8,13 +8,25 @@ getgenv().Aimbot = {
     },
 }
 
+-- ✅ Notificação com imagem estilo anime
+task.spawn(function()
+    repeat wait() until game:IsLoaded()
+    wait(1)
+    pcall(function()
+        game:GetService("StarterGui"):SetCore("SendNotification", {
+            Title = "Aimbot Loaded",
+            Text = "Join now on https://discord.gg/seulink", -- personalize o link
+            Duration = 6,
+            Icon = "rbxassetid://122409118619665" -- imagem anime
+        })
+    end)
+end)
+
 if getgenv().AimbotRan then
     return
 else
     getgenv().AimbotRan = true
 end
--- make it reexecutable to update settings
-
 
 local RunService = game:GetService('RunService')
 local Workspace = game:GetService('Workspace')
@@ -24,10 +36,9 @@ local LocalPlayer = Players.LocalPlayer
 local Camera = Workspace.CurrentCamera
 local Mouse = LocalPlayer:GetMouse()
 
-local Player = nil -- Our target player
+local Player = nil
 
-
-local GetClosestPlayer = function() -- // Optimized GetClosestPlayer i believe?
+local GetClosestPlayer = function()
     local ClosestDistance, ClosestPlayer = 100000, nil
     for _, Player : Player in pairs(Players:GetPlayers()) do
         if Player.Name ~= LocalPlayer.Name and Player.Character and Player.Character:FindFirstChild('HumanoidRootPart') then
@@ -45,22 +56,21 @@ local GetClosestPlayer = function() -- // Optimized GetClosestPlayer i believe?
     return ClosestPlayer
 end
 
-Mouse.KeyDown:Connect(function(key) -- Get our closest player (toggle)
+Mouse.KeyDown:Connect(function(key)
     if key == Aimbot.Keybind:lower() then
         Player = not Player and GetClosestPlayer() or nil
     end
 end)
 
 RunService.RenderStepped:Connect(function()
-    if not Player then
-        return
-    end
-    if not Aimbot.Status then
-        return
-    end
+    if not Player then return end
+    if not Aimbot.Status then return end
+
     local Hitpart = Player.Character:FindFirstChild(Aimbot.Hitpart)
-    if not Hitpart then
-        return
-    end
-    Camera.CFrame = CFrame.new(Camera.CFrame.Position, Hitpart.Position + Hitpart.Velocity * Vector3.new(Aimbot.Prediction.X, Aimbot.Prediction.Y, Aimbot.Prediction.X))
+    if not Hitpart then return end
+
+    Camera.CFrame = CFrame.new(
+        Camera.CFrame.Position,
+        Hitpart.Position + Hitpart.Velocity * Vector3.new(Aimbot.Prediction.X, Aimbot.Prediction.Y, Aimbot.Prediction.X)
+    )
 end)
